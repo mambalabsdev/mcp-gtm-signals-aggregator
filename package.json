@@ -1,6 +1,6 @@
 {
   "name": "@mambalabsdev/mcp-gtm-signals-aggregator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for GTM Signals Aggregator. Combines hiring and tech stack detection into one composite GTM score via Apify. Clay-ready output.",
   "type": "module",
   "bin": {
@@ -38,5 +38,6 @@
   "devDependencies": {
     "@types/node": "^20.14.0",
     "typescript": "^5.6.0"
-  }
+  },
+  "mcpName": "com.mambabuilt/mcp-gtm-signals-aggregator"
 }
