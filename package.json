@@ -1,0 +1,42 @@
+{
+  "name": "@mambalabsdev/mcp-gtm-signals-aggregator",
+  "version": "1.0.0",
+  "description": "MCP server for GTM Signals Aggregator. Combines hiring and tech stack detection into one composite GTM score via Apify. Clay-ready output.",
+  "type": "module",
+  "bin": {
+    "mcp-gtm-signals-aggregator": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "gtm",
+    "signals",
+    "aggregator",
+    "lead-scoring",
+    "apify",
+    "clay",
+    "lead-generation"
+  ],
+  "author": "Mamba Labs <labs@mambamindsetgrowth.com>",
+  "license": "MIT",
+  "homepage": "https://apify.com/mambalabs/gtm-signals-aggregator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mambalabsdev/mcp-gtm-signals-aggregator"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.6.0"
+  }
+}
