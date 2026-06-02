@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mamba-gtm-signals": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mambalabsdev/mcp-gtm-signals-aggregator"
+      ],
+      "env": {
+        "APIFY_TOKEN": "your-apify-token"
+      }
+    }
+  }
+}
