@@ -52,6 +52,31 @@ Get your token at https://console.apify.com/account/integrations, paste it in, a
 
 The tool returns the actor's flat JSON row for the scanned company, including the composite GTM score, a recommended action, the underlying hiring and tech-stack signals, and an optional summary. See the Apify Store page for the full output schema.
 
+## Example output
+
+```json
+{
+  "company_domain": "notion.so",
+  "composite_signal": "strong",
+  "composite_score": 82,
+  "recommended_action": "prioritize",
+  "gtm_hiring_signal": true,
+  "signal_strength": "high",
+  "gtm_role_count": 9,
+  "crm_detected": "salesforce",
+  "tech_stack_signal": "high",
+  "gtm_tool_count": 5,
+  "run_date": "2026-05-28"
+}
+```
+
+## Features
+
+- Combines hiring signals and tech stack detection in a single call
+- Flat row with composite_score, composite_signal, and recommended_action
+- Optional plain-English gtm_signal_summary
+- Designed for AI agent consumption
+
 ## Full actor documentation
 
 This server is a thin client and holds no analysis logic. For the complete input and output reference, pricing, and run history, see the Apify Store page:
