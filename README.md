@@ -1,5 +1,7 @@
 # GTM Signals Aggregator MCP Server
 
+[![Smithery](https://smithery.ai/badge/mambabuilt/mcp-gtm-signals-aggregator)](https://smithery.ai/servers/mambabuilt/mcp-gtm-signals-aggregator)
+
 An MCP server that rolls a company's go-to-market signals into one composite score. It wraps the Mamba Labs GTM Signals Aggregator actor on Apify and returns a Clay-ready flat JSON row to any MCP client.
 
 ## What it does
