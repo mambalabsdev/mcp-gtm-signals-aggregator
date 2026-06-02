@@ -15,16 +15,6 @@ const pkg = JSON.parse(
 const USER_AGENT = `mambalabs-mcp ${pkg.name}@${pkg.version}`;
 
 const APIFY_TOKEN = process.env.APIFY_TOKEN;
-if (!APIFY_TOKEN) {
-  console.error(
-    [
-      "APIFY_TOKEN is not set.",
-      "This server needs an Apify API token to run the GTM Signals Aggregator actor.",
-      "Create a token at https://console.apify.com/account/integrations and pass it as the APIFY_TOKEN environment variable.",
-    ].join("\n"),
-  );
-  process.exit(1);
-}
 
 // The tilde between the org name and the actor name is Apify's required separator.
 const ACTOR_ENDPOINT =
@@ -58,6 +48,10 @@ server.tool(
       ),
   },
   async ({ company_domain, include_summary, explain_mode }) => {
+    if (!APIFY_TOKEN) {
+      return { isError: true, content: [{ type: "text", text: "APIFY_TOKEN is not set. Create a token at https://console.apify.com/account/integrations and set it as the APIFY_TOKEN environment variable." }] };
+    }
+
     const input: Record<string, unknown> = { company_domain };
     if (include_summary !== undefined) input.include_summary = include_summary;
     if (explain_mode !== undefined) input.explain_mode = explain_mode;
