@@ -25,10 +25,20 @@ const server = new McpServer({
   version: pkg.version,
 });
 
-server.tool(
+server.registerTool(
   "aggregate_gtm_signals",
-  "Aggregate a company's GTM signals into one composite score. Runs hiring-signal and tech-stack detection in a single call and returns a flat, Clay-ready JSON row with a composite GTM score, a recommended action, and an optional plain-English summary.",
   {
+    title: "Aggregate GTM Signals",
+    description:
+      "Aggregate a company's GTM signals into one composite score. Runs hiring-signal and tech-stack detection in a single call and returns a flat, Clay-ready JSON row with a composite GTM score, a recommended action, and an optional plain-English summary. Read-only; requires an APIFY_TOKEN and consumes Apify credits per call.",
+    annotations: {
+      title: "Aggregate GTM Signals",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
+    inputSchema: {
     company_domain: z
       .string()
       .describe(
@@ -46,6 +56,7 @@ server.tool(
       .describe(
         "If true, gtm_signal_summary becomes a longer, more detailed explanation instead of a 1 to 2 sentence summary.",
       ),
+  },
   },
   async ({ company_domain, include_summary, explain_mode }) => {
     if (!APIFY_TOKEN) {
