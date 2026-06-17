@@ -18,7 +18,7 @@ const APIFY_TOKEN = process.env.APIFY_TOKEN;
 
 // The tilde between the org name and the actor name is Apify's required separator.
 const ACTOR_ENDPOINT =
-  "https://api.apify.com/v2/acts/mambalabs~gtm-signals-aggregator/run-sync-get-dataset-items?timeout=300";
+  "https://api.apify.com/v2/acts/xKdRfnfFNkdMpFuNs/run-sync-get-dataset-items?timeout=300";
 
 const server = new McpServer({
   name: "mamba-gtm-signals-aggregator",

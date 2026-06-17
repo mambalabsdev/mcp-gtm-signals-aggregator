@@ -81,7 +81,7 @@ The tool returns the actor's flat JSON row for the scanned company, including th
 
 This server is a thin client and holds no analysis logic. For the complete input and output reference, pricing, and run history, see the Apify Store page:
 
-https://apify.com/mambalabs/gtm-signals-aggregator
+https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay
 
 ## Mamba Labs GTM Suite
 

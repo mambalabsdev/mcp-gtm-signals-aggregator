@@ -1,6 +1,6 @@
 {
   "name": "@mambalabsdev/mcp-gtm-signals-aggregator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "MCP server for GTM Signals Aggregator. Combines hiring and tech stack detection into one composite GTM score via Apify. Clay-ready output.",
   "type": "module",
   "bin": {
@@ -23,7 +23,7 @@
   ],
   "author": "Mamba Labs <labs@mambamindsetgrowth.com>",
   "license": "MIT",
-  "homepage": "https://apify.com/mambalabs/gtm-signals-aggregator",
+  "homepage": "https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay",
   "repository": {
     "type": "git",
     "url": "https://github.com/mambalabsdev/mcp-gtm-signals-aggregator"
