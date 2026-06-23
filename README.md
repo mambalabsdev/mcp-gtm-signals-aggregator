@@ -4,6 +4,20 @@
 
 An MCP server that rolls a company's go-to-market signals into one composite score. It wraps the Mamba Labs GTM Signals Aggregator actor on Apify and returns a Clay-ready flat JSON row to any MCP client.
 
+## What's Inside
+
+- [What it does](#what-it-does)
+- [Quick start](#quick-start)
+- [Prerequisites](#prerequisites)
+- [Example prompts](#example-prompts)
+- [Inputs](#inputs)
+- [Output](#output)
+- [Example output](#example-output)
+- [Features](#features)
+- [Full actor documentation](#full-actor-documentation)
+- [Mamba Labs GTM Suite](#mamba-labs-gtm-suite)
+- [License](#license)
+
 ## What it does
 
 Give it a company domain and it runs hiring-signal and tech-stack detection together, then returns a single composite GTM score, a recommended action, and an optional plain-English summary. One call, one row, ready to drop into Clay, a CRM, or an AI agent workflow. All of the analysis runs on Apify. This package is a thin client that calls the actor and hands back the result.
