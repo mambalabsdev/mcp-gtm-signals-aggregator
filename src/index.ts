@@ -44,6 +44,10 @@ server.registerTool(
       .describe(
         "Bare company domain without https:// and without a trailing slash. Example: stripe.com",
       ),
+    sources: z
+      .array(z.enum(["hiring", "tech_stack", "funding", "events", "workplace"]))
+      .optional()
+      .describe("Which signals to aggregate. Default [\"hiring\", \"tech_stack\"], which is what this actor has always run. Each extra source is one more sub actor run on the caller's own Apify account, so this is the cost dial as well as the depth dial. The composite score is normalized over the sources you selected, so a funding only run is scored on its own scale rather than capped by absent sources."),
     include_summary: z
       .boolean()
       .optional()
@@ -58,12 +62,13 @@ server.registerTool(
       ),
   },
   },
-  async ({ company_domain, include_summary, explain_mode }) => {
+  async ({ company_domain, sources, include_summary, explain_mode }) => {
     if (!APIFY_TOKEN) {
       return { isError: true, content: [{ type: "text", text: "APIFY_TOKEN is not set. Create a token at https://console.apify.com/account/integrations and set it as the APIFY_TOKEN environment variable." }] };
     }
 
     const input: Record<string, unknown> = { company_domain };
+    if (sources !== undefined) input.sources = sources;
     if (include_summary !== undefined) input.include_summary = include_summary;
     if (explain_mode !== undefined) input.explain_mode = explain_mode;
 
