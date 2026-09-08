@@ -59,6 +59,7 @@ Get your token at https://console.apify.com/account/integrations, paste it in, a
 ## Inputs
 
 - `company_domain` (required): the bare company domain, no `https://` and no trailing slash. Example: `stripe.com`
+- `sources` (optional): which signals to aggregate: `hiring`, `tech_stack`, `funding`, `events`, `workplace`. Default `["hiring", "tech_stack"]`. Each extra source is one more sub actor run on your own Apify account. The composite score is normalized over the sources you selected.
 - `include_summary` (optional): include a plain-English `gtm_signal_summary` in the output.
 - `explain_mode` (optional): if true, the summary becomes a longer, more detailed explanation.
 

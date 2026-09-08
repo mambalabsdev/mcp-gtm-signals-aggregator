@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.3",
   "name": "mcp-gtm-signals-aggregator",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "MCP server for GTM Signals Aggregator. Combines hiring and tech stack detection into one composite GTM score via Apify. Clay-ready output.",
   "author": {
     "name": "Mamba Labs"
