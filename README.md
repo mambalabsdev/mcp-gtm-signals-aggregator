@@ -14,6 +14,8 @@ An MCP server that rolls a company's go-to-market signals into one composite sco
 - [Output](#output)
 - [Example output](#example-output)
 - [Features](#features)
+- [What this server does and does not do](#what-this-server-does-and-does-not-do)
+- [How each call runs](#how-each-call-runs)
 - [Full actor documentation](#full-actor-documentation)
 - [Mamba Labs GTM Suite](#mamba-labs-gtm-suite)
 - [License](#license)
@@ -58,10 +60,14 @@ Get your token at https://console.apify.com/account/integrations, paste it in, a
 
 ## Inputs
 
-- `company_domain` (required): the bare company domain, no `https://` and no trailing slash. Example: `stripe.com`
-- `sources` (optional): which signals to aggregate: `hiring`, `tech_stack`, `funding`, `events`, `workplace`. Default `["hiring", "tech_stack"]`. Each extra source is one more sub actor run on your own Apify account. The composite score is normalized over the sources you selected.
-- `include_summary` (optional): include a plain-English `gtm_signal_summary` in the output.
-- `explain_mode` (optional): if true, the summary becomes a longer, more detailed explanation.
+Every input the tool accepts, generated from the server's own tool list.
+
+| Input | Type | Required | Description |
+| --- | --- | --- | --- |
+| `company_domain` | string | yes | Bare company domain without https:// and without a trailing slash. Example: stripe.com |
+| `sources` | array of `hiring`, `tech_stack`, `funding`, `events`, `workplace` | no | Which signals to aggregate. Default ["hiring", "tech_stack"], which is what this actor has always run. Each extra source is one more sub actor run on the caller's own Apify account, so this is the cost dial as well as the depth dial. The composite score is normalized over the sources you selected, so a funding only run is scored on its own scale rather than capped by absent sources. |
+| `include_summary` | boolean | no | Include a plain-English gtm_signal_summary field in the output. Defaults to the actor's default when omitted. |
+| `explain_mode` | boolean | no | If true, gtm_signal_summary becomes a longer, more detailed explanation instead of a 1 to 2 sentence summary. |
 
 ## Output
 
@@ -92,6 +98,17 @@ The tool returns the actor's flat JSON row for the scanned company, including th
 - Optional plain-English gtm_signal_summary
 - Designed for AI agent consumption
 
+## What this server does and does not do
+
+- It does one thing: one composite GTM score for one company per call, built from the sources you pick in `sources` (hiring, tech stack, funding, events, workplace).
+- Each extra source is one more sub actor run on your own Apify account, so `sources` is both the depth dial and the cost dial.
+- It does not return the underlying signals one by one. For those, call the single purpose servers, or install [@mambalabsdev/mcp-gtm-suite](https://www.npmjs.com/package/@mambalabsdev/mcp-gtm-suite), which carries this tool and twenty other account-intelligence tools in one server.
+- It reads public company pages only. It writes nothing anywhere.
+
+## How each call runs
+
+Each call starts the actor run, polls it until it finishes, then reads the dataset. The run is allowed 300 seconds, as before. If the run is still going when this call stops waiting, the call returns the run id and a console link instead of a timeout, so the result is never lost.
+
 ## Full actor documentation
 
 This server is a thin client and holds no analysis logic. For the complete input and output reference, pricing, and run history, see the Apify Store page:
@@ -102,24 +119,26 @@ https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay
 
 ## Mamba Labs GTM Suite
 
-This server is part of the **Mamba Labs GTM Suite**, a fleet of twelve specialized MCP servers for go-to-market signal intelligence, each backed by a dedicated Apify actor.
+This server is one of 54 Mamba Labs MCP servers, each backed by a dedicated Apify actor and published under [@mambalabsdev on npm](https://www.npmjs.com/org/mambalabsdev). The ones closest to this server:
 
 | Actor | Immutable Actor ID |
 |---|---|
-| [GTM Hiring Signal Scraper](https://console.apify.com/actors/D7O1SA2EqwHGsGr1P) | `D7O1SA2EqwHGsGr1P` |
-| [GTM Tech Stack Signal Enrichment](https://console.apify.com/actors/qyd7nNyqFPelQViBx) | `qyd7nNyqFPelQViBx` |
-| [GTM Signals Aggregator](https://console.apify.com/actors/xKdRfnfFNkdMpFuNs) | `xKdRfnfFNkdMpFuNs` |
-| [Job Board Keyword Signal Scanner](https://console.apify.com/actors/4DvqpvhMR74NLcDDY) | `4DvqpvhMR74NLcDDY` |
-| [Domain to LinkedIn URL Resolver](https://console.apify.com/actors/3HtnSaqPHOg1Qg5gx) | `3HtnSaqPHOg1Qg5gx` |
-| [ICP Fit Scorer](https://console.apify.com/actors/W161DT8W4kW55dMFh) | `W161DT8W4kW55dMFh` |
-| [Domain Deliverability Checker](https://console.apify.com/actors/0tVgxI7A6o9jMlxmc) | `0tVgxI7A6o9jMlxmc` |
-| [Company Firmographic Enricher](https://console.apify.com/actors/YlUtLWjfPpqykmB8g) | `YlUtLWjfPpqykmB8g` |
-| [Company Social Presence Mapper](https://console.apify.com/actors/4k6CCemkgBDz18m2h) | `4k6CCemkgBDz18m2h` |
-| [Company Identity Resolver](https://console.apify.com/actors/lr8fTRAmZCBZmuwwh) | `lr8fTRAmZCBZmuwwh` |
-| [Company Change-Event Feed](https://console.apify.com/actors/oX44rS0fkEJ3rXLWe) | `oX44rS0fkEJ3rXLWe` |
-| [Funding & Press Signal Scanner](https://console.apify.com/actors/FS13X6dhQVgX3XOM6) | `FS13X6dhQVgX3XOM6` |
+| [GTM Hiring Signal Scraper](https://apify.com/mambalabs/gtm-hiring-signal-scraper) | `D7O1SA2EqwHGsGr1P` |
+| [Tech Stack Signal Detector](https://apify.com/mambalabs/gtm-tech-stack-signal-scraper) | `qyd7nNyqFPelQViBx` |
+| [GTM Signals Aggregator](https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay) | `xKdRfnfFNkdMpFuNs` |
+| [Job Board Keyword Signal Scanner](https://apify.com/mambalabs/job-board-keyword-signal-scanner) | `4DvqpvhMR74NLcDDY` |
+| [Domain to LinkedIn URL Resolver](https://apify.com/mambalabs/domain-to-linkedin-url-resolver) | `3HtnSaqPHOg1Qg5gx` |
+| [ICP Fit Scorer](https://apify.com/mambalabs/icp-account-lead-scoring-fit-scorer-0-100-for-clay) | `W161DT8W4kW55dMFh` |
+| [Domain Deliverability Checker](https://apify.com/mambalabs/domain-deliverability-checker) | `0tVgxI7A6o9jMlxmc` |
+| [Company Firmographic Enricher](https://apify.com/mambalabs/company-firmographic-enricher) | `YlUtLWjfPpqykmB8g` |
+| [Company Social Presence Mapper](https://apify.com/mambalabs/company-social-presence-mapper) | `4k6CCemkgBDz18m2h` |
+| [Company Identity Resolver](https://apify.com/mambalabs/company-identity-resolver) | `lr8fTRAmZCBZmuwwh` |
+| [Company Change Event Feed](https://apify.com/mambalabs/company-change-event-feed) | `oX44rS0fkEJ3rXLWe` |
+| [Funding and Press Signal Scanner](https://apify.com/mambalabs/funding-press-signal-scanner) | `FS13X6dhQVgX3XOM6` |
 
-> Built by [Mamba Labs](https://github.com/mambalabsdev) | [npm](https://www.npmjs.com/org/mambalabsdev) | [Apify Store](https://apify.com/mambalabs)
+To get twenty one of them in one install, use [@mambalabsdev/mcp-gtm-suite](https://www.npmjs.com/package/@mambalabsdev/mcp-gtm-suite).
+
+> Built by [Mamba Labs](https://mambabuilt.com) | [npm](https://www.npmjs.com/org/mambalabsdev) | [Apify Store](https://apify.com/mambalabs)
 
 ## License
 
