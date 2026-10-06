@@ -1,6 +1,6 @@
 {
   "name": "@mambalabsdev/mcp-gtm-signals-aggregator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "MCP server for GTM Signals Aggregator. Combines hiring and tech stack detection into one composite GTM score via Apify. Clay-ready output.",
   "type": "module",
   "bin": {
@@ -39,7 +39,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.31.0",
+    "@modelcontextprotocol/sdk": "^1.32.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
