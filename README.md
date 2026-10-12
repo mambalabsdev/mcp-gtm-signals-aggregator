@@ -145,3 +145,5 @@ To get twenty one of them in one install, use [@mambalabsdev/mcp-gtm-suite](http
 MIT
 
 Built by Mamba Labs. https://apify.com/mambalabs
+
+[![GTM Signals Aggregator MCP Server on AI Agents Listing](https://aiagentslisting.com/gtm-signals-aggregator-mcp-server/badge.svg?claim=259c10a398d5deec870ca80eeb3df4c1)](https://aiagentslisting.com/mcp/gtm-signals-aggregator-mcp-server)
