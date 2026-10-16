@@ -6,6 +6,16 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
+// Optional per call spending cap, passed through to the actor's own max_charge_usd
+// input. The actor enforces it; this wrapper only forwards it when set.
+const MAX_CHARGE_USD = z
+  .number()
+  .min(0)
+  .optional()
+  .describe(
+    "Optional spending cap for this call, in USD, passed to the actor as max_charge_usd. The run stops before any charge that would take it past this amount and keeps every row already charged. Leave empty to rely only on the maximum charge per run set on your Apify account.",
+  );
+
 const here = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
   readFileSync(join(here, "..", "package.json"), "utf8"),
@@ -58,7 +68,9 @@ async function runActor(
   actorPath: string,
   actorLabel: string,
   input: Record<string, unknown>,
+  maxChargeUsd?: number,
 ): Promise<ToolResult> {
+  if (maxChargeUsd !== undefined) input = { ...input, max_charge_usd: maxChargeUsd };
   const APIFY_TOKEN = process.env.APIFY_TOKEN;
   if (!APIFY_TOKEN) {
     return { isError: true, content: [{ type: "text", text: "APIFY_TOKEN is not set. Create a token at https://console.apify.com/account/integrations and set it as the APIFY_TOKEN environment variable." }] };
@@ -200,10 +212,10 @@ server.registerTool(
   {
     title: "Aggregate GTM Signals",
     description:
-      "Aggregate a company's GTM signals into one composite score. Runs hiring-signal and tech-stack detection in a single call and returns a flat, Clay-ready JSON row with a composite GTM score, a recommended action, and an optional plain-English summary. Read-only; requires an APIFY_TOKEN and consumes Apify credits per call.",
+      "Aggregate a company's GTM signals into one composite score. Runs hiring-signal and tech-stack detection in a single call and returns a flat, Clay-ready JSON row with a composite GTM score, a recommended action, and an optional plain-English summary. Reads public data and writes nothing; requires an APIFY_TOKEN and consumes Apify credits per call.",
     annotations: {
       title: "Aggregate GTM Signals",
-      readOnlyHint: true,
+      readOnlyHint: false,
       destructiveHint: false,
       idempotentHint: true,
       openWorldHint: true,
@@ -230,15 +242,16 @@ server.registerTool(
       .describe(
         "If true, gtm_signal_summary becomes a longer, more detailed explanation instead of a 1 to 2 sentence summary.",
       ),
+      max_charge_usd: MAX_CHARGE_USD,
   },
   },
-  async ({ company_domain, sources, include_summary, explain_mode }) => {
+  async ({ company_domain, sources, include_summary, explain_mode, max_charge_usd }) => {
     const input: Record<string, unknown> = { company_domain };
     if (sources !== undefined) input.sources = sources;
     if (include_summary !== undefined) input.include_summary = include_summary;
     if (explain_mode !== undefined) input.explain_mode = explain_mode;
 
-    return runActor("xKdRfnfFNkdMpFuNs", "GTM Signals Aggregator", input);
+    return runActor("xKdRfnfFNkdMpFuNs", "GTM Signals Aggregator", input, max_charge_usd);
   },
 );
 

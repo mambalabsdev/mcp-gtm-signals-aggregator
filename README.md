@@ -15,6 +15,7 @@ An MCP server that rolls a company's go-to-market signals into one composite sco
 - [Example output](#example-output)
 - [Features](#features)
 - [What this server does and does not do](#what-this-server-does-and-does-not-do)
+- [Pricing](#pricing)
 - [How each call runs](#how-each-call-runs)
 - [Full actor documentation](#full-actor-documentation)
 - [Mamba Labs GTM Suite](#mamba-labs-gtm-suite)
@@ -68,6 +69,7 @@ Every input the tool accepts, generated from the server's own tool list.
 | `sources` | array of `hiring`, `tech_stack`, `funding`, `events`, `workplace` | no | Which signals to aggregate. Default ["hiring", "tech_stack"], which is what this actor has always run. Each extra source is one more sub actor run on the caller's own Apify account, so this is the cost dial as well as the depth dial. The composite score is normalized over the sources you selected, so a funding only run is scored on its own scale rather than capped by absent sources. |
 | `include_summary` | boolean | no | Include a plain-English gtm_signal_summary field in the output. Defaults to the actor's default when omitted. |
 | `explain_mode` | boolean | no | If true, gtm_signal_summary becomes a longer, more detailed explanation instead of a 1 to 2 sentence summary. |
+| `max_charge_usd` | number | no | Optional spending cap for this call, in USD. The actor stops before any charge that would take the run past this amount and keeps every row already charged. |
 
 ## Output
 
@@ -105,6 +107,17 @@ The tool returns the actor's flat JSON row for the scanned company, including th
 - It does not return the underlying signals one by one. For those, call the single purpose servers, or install [@mambalabsdev/mcp-gtm-suite](https://www.npmjs.com/package/@mambalabsdev/mcp-gtm-suite), which carries this tool and twenty other account-intelligence tools in one server.
 - It reads public company pages only. It writes nothing anywhere.
 
+## Pricing
+
+You pay per event on Apify, billed to your own Apify account. Prices from the live pricing record, read 2026-10-16:
+
+| Event | Price per event (USD) | Fires when |
+| --- | --- | --- |
+| `apify-default-dataset-item` | $0.055 on the Free plan, down to $0.0385 on higher Apify plans | Single result in the default dataset. |
+| `apify-actor-start` | $0.00005 | Charged when the Actor starts running. Number of events charged depends on Actor memory (one event per GB, minimum one event). |
+
+The [actor's Apify page](https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay) carries the current prices. Running this server consumes Apify credits.
+
 ## How each call runs
 
 Each call starts the actor run, polls it until it finishes, then reads the dataset. The run is allowed 1,800 seconds. If the run is still going when this call stops waiting, the call returns the run id and a console link instead of a timeout, so the result is never lost.
@@ -119,7 +132,7 @@ https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay
 
 ## Mamba Labs GTM Suite
 
-This server is one of 54 Mamba Labs MCP servers, each backed by a dedicated Apify actor and published under [@mambalabsdev on npm](https://www.npmjs.com/org/mambalabsdev). The ones closest to this server:
+This server is one of 58 Mamba Labs MCP servers, each backed by a dedicated Apify actor and published under [@mambalabsdev on npm](https://www.npmjs.com/org/mambalabsdev). The ones closest to this server:
 
 | Actor | Immutable Actor ID |
 |---|---|
