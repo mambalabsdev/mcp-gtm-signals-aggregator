@@ -134,7 +134,7 @@ https://apify.com/mambalabs/b2b-buying-signals-hiring-tech-stack-intent-for-clay
 
 ## Mamba Labs GTM Suite
 
-This server is one of 58 Mamba Labs MCP servers, each backed by a dedicated Apify actor and published under [@mambalabsdev on npm](https://www.npmjs.com/org/mambalabsdev). The ones closest to this server:
+This server is one of 103 Mamba Labs MCP servers, each backed by a dedicated Apify actor and published under [@mambalabsdev on npm](https://www.npmjs.com/org/mambalabsdev). The ones closest to this server:
 
 | Actor | Immutable Actor ID |
 |---|---|
